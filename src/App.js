@@ -1,10 +1,14 @@
 import React, { Fragment } from 'react'
-import { Category } from './components/Category'
-import { GlobalStyle } from './globalStyles'
+import { GlobalStyle } from './styles/globalStyles'
+import { ListOfCategories } from './components/ListOfCategories'
+import { ListOfPhotoCards } from './components/ListOfPhotoCards'
+import { Logo } from './components/Logo'
 
 export const App = () => (
     <Fragment>
         <GlobalStyle />
-        <Category />
+        <Logo/>
+        <ListOfCategories />
+        <ListOfPhotoCards />
     </Fragment>
 )
