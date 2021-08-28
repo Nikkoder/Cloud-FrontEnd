@@ -1,30 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ImgWrapper, Img, Button, Article } from './styles'
+import React, { useState } from 'react'
+import { ImgWrapper, Img, Button, Article, LikeIcon } from './styles'
 import { MdFavoriteBorder } from "react-icons/md";
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useNearScreen } from '../../hooks/useNearScreen';
 
 const DEFAULT_IMAGE = 'https://archive-media-1.nyafuu.org/w/image/1530/15/1530151764391.jpg'
 
 export const PhotoCard = ({ id, likes = 0, src = DEFAULT_IMAGE}) => {
-    const element = useRef(null)
-    const [show, setShow] = useState(false)
+    const [show, element] = useNearScreen()
+    const key = `like-${id}`
+    const [liked, setLiked] = useLocalStorage(key, false)
+    const [hover, setOver] = useState(false);
 
-    useEffect(() => { 
-        Promise.resolve( // Cargamos solamente el import si lo necesitamos
-            typeof window.IntersectionObserver !== 'undefined'
-                ? window.IntersectionObserver
-                : import('intersection-observer')
-        ).then(() => {
-            const observer = new window.IntersectionObserver((entries) => {
-                const { isIntersecting } = entries[0]
-                if (isIntersecting)
-                {
-                    setShow(true)
-                    observer.disconnect()
-                }
-            })
-            observer.observe(element.current)
-        })
-    }, [element])
+
+    const Icon = liked ? LikeIcon : MdFavoriteBorder // constante con Mayuscula porque es un COMPONENTE
 
     return (
         <Article ref={element}>
@@ -35,8 +24,11 @@ export const PhotoCard = ({ id, likes = 0, src = DEFAULT_IMAGE}) => {
                             <Img src={src}/>
                         </ImgWrapper>
                     </a>
-                    <Button>
-                        <MdFavoriteBorder size='32px'/>{likes} likes!
+                    <Button onClick={() => setLiked(!liked)}
+                    onMouseEnter={() => setOver(true)}
+                    onMouseLeave={() => setOver(false)}
+                    isOver={hover}>
+                        <Icon size='32px'/>{likes} likes!
                     </Button>
                 </>
             }

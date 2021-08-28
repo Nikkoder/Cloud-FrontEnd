@@ -1,6 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { fadeIn } from "../../styles/animations";
+import { MdFavorite } from 'react-icons/md'
 
+export const LikeIcon = styled(MdFavorite)`
+  color:  #ff277a;
+  ${fadeIn({ time: '250ms', type: 'ease-in' })}
+`
 export const ImgWrapper = styled.div`
     border-radius: 10px;
     display: block;
@@ -31,6 +36,10 @@ export const Button = styled.button`
     & svg {
         margin-right: 4px;
     }
+    ${props => props.isOver &&
+    css`
+        color: red;
+    `}
     background-color: transparent;
     border: 0px;
 `
